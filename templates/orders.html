@@ -1,0 +1,58 @@
+
+<html>
+<head>
+    <title>Order Management System</title>
+</head>
+<body>
+    <h1>All Orders</h1>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Order ID</th>
+            <th>Items</th>
+            <th>Delivery Date</th>
+            <th>Sender</th>
+            <th>Recipient</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for order in orders %}
+
+        <tr>
+            <form action="/edit/{{ order.order_id }}" method="post">
+                <td>{{ order.order_id }}</td>
+                <td><input type="number" name="items" value="{{ order.items }}" required></td>
+                <td><input type="text" name="delivery_date" value="{{ order.delivery_date }}" required></td>
+                <td><input type="text" name="sender" value="{{ order.sender }}" required></td>
+                <td><input type="text" name="recipient" value="{{ order.recipient }}" required></td>
+                <td><input type="text" name="address" value="{{ order.address }}" required></td>
+                <td>{{ order.status }}</td>
+                <td>
+
+
+                    <button type="submit">Edit</button>
+                    <a href="/delete/{{ order.order_id }}">Delete</a>
+                    {% if order.status != 'Delivered' %}
+                    | <a href="/deliver/{{ order.order_id }}">Mark Delivered</a>
+                    {% endif %}
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Add New Order</h2>
+    <form action="/add" method="post">
+        <input type="text" name="order_id" placeholder="Order ID" required>
+        <input type="number" name="items" placeholder="No. of Items" required>
+        <input type="text" name="delivery_date" placeholder="YYYY-MM-DD" required>
+        <input type="text" name="sender" placeholder="Sender Name" required>
+        <input type="text" name="recipient" placeholder="Recipient Name" required>
+        <input type="text" name="address" placeholder="Recipient Address" required>
+        <button type="submit">Add Order</button>
+    </form>
+
+    <br>
+    <a href="/logs">View Action Logs</a>
+</body>
+</html>
